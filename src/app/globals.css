@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-pro-white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-pro-lime text-pro-black  p-1 hover:p-2 rounded-xl hover:bg-pro-lime-light transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply bg-pro-black-light text-pro-white hover:bg-pro-black border p-1 hover:p-2 rounded-xl border-pro-lime transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-pro-black-light border border-pro-black-dark rounded-lg shadow-lg p-6;
+  }
+
+  .input {
+    @apply bg-pro-black border border-pro-black-dark text-pro-white-off rounded-lg px-4 py-2 focus:border-pro-lime focus:ring-1 focus:ring-pro-lime outline-none transition-colors duration-200;
+  }
+
+  .table-header {
+    @apply bg-pro-black-dark text-pro-white-off text-left text-xs font-medium uppercase tracking-wider;
+  }
+
+  .table-cell {
+    @apply px-6 py-4 whitespace-nowrap text-pro-white-off;
+  }
+
+  .badge {
+    @apply px-2 py-1 text-xs font-semibold rounded-full;
+  }
+
+  .badge-success {
+    @apply bg-pro-lime/20 text-pro-lime;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-500/20 text-yellow-500;
+  }
+
+  .badge-error {
+    @apply bg-red-500/20 text-red-500;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Scrollbar personnalisé */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* FullCalendar Dark Mode Styles */
+.dark .fc {
+  --fc-border-color: #374151;
+  --fc-page-bg-color: #1F2937;
+  --fc-neutral-bg-color: #374151;
+  --fc-neutral-text-color: #F3F4F6;
+  --fc-button-text-color: #F3F4F6;
+  --fc-button-bg-color: #374151;
+  --fc-button-border-color: #4B5563;
+  --fc-button-hover-bg-color: #4B5563;
+  --fc-button-hover-border-color: #6B7280;
+  --fc-button-active-bg-color: #6B7280;
+  --fc-button-active-border-color: #9CA3AF;
+  --fc-event-bg-color: #3B82F6;
+  --fc-event-border-color: #2563EB;
+  --fc-event-text-color: #FFFFFF;
+  --fc-event-selected-overlay-color: rgba(255, 255, 255, 0.25);
+}
+
+.dark .fc-theme-standard .fc-scrollgrid {
+  border-color: #374151;
+}
+
+.dark .fc .fc-timegrid-slot-minor {
+  border-top-color: #374151;
+}
+
+.dark .fc .fc-timegrid-slot-label-cushion {
+  color: #D1D5DB;
+}
+
+.dark .fc .fc-col-header-cell-cushion {
+  color: #F3F4F6;
+}
+
+.dark .fc .fc-toolbar-title {
+  color: #F3F4F6;
+}

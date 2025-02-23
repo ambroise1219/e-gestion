@@ -1,0 +1,10 @@
+project-root/
+├── app/                    # Application Next.js
+│   ├── components/        # Composants réutilisables
+│   ├── layouts/          # Layouts communs
+│   ├── app/            # Routes de l'application
+│   ├── styles/           # Styles globaux
+│   └── utils/            # Utilitaires
+├── electron/              # Configuration Electron
+├── shared/                # Code partagé entre Next.js et Electron
+└── api/                   # Backend API 
