@@ -89,20 +89,26 @@ export async function POST(request) {
       name,
       reference,
       description,
-      quantity,
+      quantity: rawQuantity,
       unit,
-      min_quantity,
-      max_quantity,
+      min_quantity: rawMinQuantity,
+      max_quantity: rawMaxQuantity,
       category,
       status = 'active',
-      unit_price,
+      unit_price: rawUnitPrice,
       supplier_id
     } = data;
 
+    // Conversion explicite en nombres
+    const quantity = Number(rawQuantity) || 0;
+    const min_quantity = Number(rawMinQuantity) || 0;
+    const max_quantity = Number(rawMaxQuantity) || null;
+    const unit_price = Number(rawUnitPrice) || null;
+
     // Vérifier les données requises
-    if (!name || !reference || !unit || quantity == null || min_quantity == null) {
+    if (!name || !reference || !unit || quantity < 0 || min_quantity < 0) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Missing or invalid required fields' },
         { status: 400 }
       );
     }
@@ -134,11 +140,11 @@ export async function POST(request) {
           quantity,
           unit,
           min_quantity,
-          max_quantity || null,
+          max_quantity,
           category,
           status,
-          unit_price || null,
-          supplier_id || null // Convertit une chaîne vide en null
+          unit_price,
+          supplier_id || null
         ]
       );
 
@@ -173,7 +179,7 @@ export async function POST(request) {
   } catch (error) {
     console.error('Error creating inventory item:', error);
     return NextResponse.json(
-      { error: 'Error creating inventory item' },
+      { error: error.message || 'Error creating inventory item' },
       { status: 500 }
     );
   }
@@ -188,6 +194,29 @@ export async function PUT(request) {
     if (!id) {
       return NextResponse.json(
         { error: 'Item ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Convertir les valeurs numériques
+    if (updateData.quantity !== undefined) {
+      updateData.quantity = Number(updateData.quantity);
+    }
+    if (updateData.min_quantity !== undefined) {
+      updateData.min_quantity = Number(updateData.min_quantity);
+    }
+    if (updateData.max_quantity !== undefined) {
+      updateData.max_quantity = Number(updateData.max_quantity);
+    }
+    if (updateData.unit_price !== undefined) {
+      updateData.unit_price = Number(updateData.unit_price);
+    }
+
+    // Valider les valeurs numériques
+    if (isNaN(updateData.quantity) || isNaN(updateData.min_quantity) || 
+        isNaN(updateData.max_quantity) || isNaN(updateData.unit_price)) {
+      return NextResponse.json(
+        { error: 'Invalid numeric values' },
         { status: 400 }
       );
     }
@@ -217,7 +246,7 @@ export async function PUT(request) {
   } catch (error) {
     console.error('Error updating inventory item:', error);
     return NextResponse.json(
-      { error: 'Error updating inventory item' },
+      { error: error.message || 'Error updating inventory item' },
       { status: 500 }
     );
   }

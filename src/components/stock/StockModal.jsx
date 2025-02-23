@@ -104,9 +104,19 @@ export default function StockModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+
+    // Transformer les données pour s'assurer que les nombres sont bien des nombres
+    const submissionData = {
+      ...formData,
+      quantity: Number(formData.quantity),
+      min_quantity: Number(formData.min_quantity),
+      max_quantity: Number(formData.max_quantity),
+      unit_price: Number(formData.unit_price),
+      supplier_id: formData.supplier_id || null // Convertir une chaîne vide en null
+    };
     
     try {
-      await onSubmit(formData);
+      await onSubmit(submissionData);
       onClose();
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -119,7 +129,10 @@ export default function StockModal({
     
     // Convertir les valeurs numériques
     if (['quantity', 'min_quantity', 'max_quantity', 'unit_price'].includes(name)) {
-      processedValue = value === '' ? 0 : Number(value);
+      processedValue = value === '' ? 0 : parseFloat(value);
+      if (isNaN(processedValue)) {
+        processedValue = 0;
+      }
     }
     
     setFormData(prev => ({

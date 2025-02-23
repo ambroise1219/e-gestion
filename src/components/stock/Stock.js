@@ -180,6 +180,70 @@ export default function Stock() {
     }
   };
 
+  const handleMovement = async (movementData) => {
+    try {
+      const currentItem = items.find(item => item.id === movementData.item_id);
+      if (!currentItem) return;
+
+      // S'assurer que les quantités sont des nombres
+      const currentQuantity = parseFloat(currentItem.quantity);
+      const movementQuantity = parseFloat(movementData.quantity);
+
+      let newQuantity;
+      switch (movementData.transaction_type) {
+        case 'in':
+          newQuantity = currentQuantity + movementQuantity;
+          break;
+        case 'out':
+          if (currentQuantity < movementQuantity) {
+            throw new Error('Quantité insuffisante en stock');
+          }
+          newQuantity = currentQuantity - movementQuantity;
+          break;
+        case 'adjustment_up':
+          newQuantity = currentQuantity + movementQuantity;
+          break;
+        case 'adjustment_down':
+          if (currentQuantity < movementQuantity) {
+            throw new Error('Quantité insuffisante en stock');
+          }
+          newQuantity = currentQuantity - movementQuantity;
+          break;
+        default:
+          throw new Error('Type de mouvement non valide');
+      }
+
+      // Mise à jour de l'item avec la nouvelle quantité
+      const updatedItem = {
+        ...currentItem,
+        quantity: newQuantity
+      };
+
+      // Mise à jour de l'état
+      setItems(prevItems =>
+        prevItems.map(item =>
+          item.id === movementData.item_id ? updatedItem : item
+        )
+      );
+
+      // Ajout du mouvement à l'historique
+      setTransactions(prev => [
+        {
+          id: Date.now(),
+          ...movementData,
+          date: new Date().toISOString(),
+          quantity: movementQuantity // S'assurer que la quantité est un nombre
+        },
+        ...prev
+      ]);
+
+      return updatedItem;
+    } catch (error) {
+      console.error('Erreur lors du mouvement de stock:', error);
+      throw error;
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">

@@ -65,7 +65,7 @@ export async function POST(request) {
     const {
       item_id,
       transaction_type,
-      quantity,
+      quantity: rawQuantity,
       source_location_id,
       destination_location_id,
       reference,
@@ -73,10 +73,13 @@ export async function POST(request) {
       notes
     } = data;
 
+    // Conversion explicite en nombre
+    const quantity = Number(rawQuantity);
+
     // Vérifications de base
-    if (!item_id || !transaction_type || quantity === undefined) {
+    if (!item_id || !transaction_type || isNaN(quantity)) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Missing or invalid required fields' },
         { status: 400 }
       );
     }
@@ -87,7 +90,7 @@ export async function POST(request) {
     try {
       // 1. Vérifier l'article et récupérer son prix unitaire
       const itemResult = await query(
-        'SELECT quantity, unit_price FROM inventory_items WHERE id = $1',
+        'SELECT quantity::numeric, unit_price FROM inventory_items WHERE id = $1',
         [item_id]
       );
 
@@ -95,19 +98,19 @@ export async function POST(request) {
         throw new Error('Item not found');
       }
 
-      const currentQuantity = itemResult.rows[0].quantity;
-      const unit_price = itemResult.rows[0].unit_price;
+      const currentQuantity = Number(itemResult.rows[0].quantity);
+      const unit_price = Number(itemResult.rows[0].unit_price);
 
       // 2. Calculer la nouvelle quantité
       let newQuantity;
       switch (transaction_type) {
         case 'in':
         case 'adjustment_up':
-          newQuantity = currentQuantity + quantity;
+          newQuantity = currentQuantity + Math.abs(quantity);
           break;
         case 'out':
         case 'adjustment_down':
-          newQuantity = currentQuantity - quantity;
+          newQuantity = currentQuantity - Math.abs(quantity);
           if (newQuantity < 0) {
             throw new Error('Insufficient stock');
           }
@@ -116,7 +119,7 @@ export async function POST(request) {
           throw new Error('Invalid transaction type');
       }
 
-      // 3. Créer la transaction
+      // 3. Créer la transaction avec quantité absolue
       const transactionResult = await query(
         `INSERT INTO inventory_transactions (
           item_id,
@@ -134,7 +137,7 @@ export async function POST(request) {
         [
           item_id,
           transaction_type,
-          quantity,
+          Math.abs(quantity),
           unit_price,
           source_location_id,
           destination_location_id,
@@ -144,7 +147,7 @@ export async function POST(request) {
         ]
       );
 
-      // 4. Mettre à jour le stock
+      // 4. Mettre à jour le stock avec la nouvelle quantité calculée
       await query(
         'UPDATE inventory_items SET quantity = $1 WHERE id = $2',
         [newQuantity, item_id]
@@ -154,9 +157,9 @@ export async function POST(request) {
       if (source_location_id) {
         await query(
           `UPDATE inventory_item_locations 
-           SET quantity = quantity - $1
+           SET quantity = GREATEST(0, quantity::numeric - $1::numeric)
            WHERE item_id = $2 AND location_id = $3`,
-          [quantity, item_id, source_location_id]
+          [Math.abs(quantity), item_id, source_location_id]
         );
       }
 
@@ -165,8 +168,8 @@ export async function POST(request) {
           `INSERT INTO inventory_item_locations (item_id, location_id, quantity)
            VALUES ($1, $2, $3)
            ON CONFLICT (item_id, location_id) 
-           DO UPDATE SET quantity = inventory_item_locations.quantity + $3`,
-          [item_id, destination_location_id, quantity]
+           DO UPDATE SET quantity = inventory_item_locations.quantity::numeric + $3::numeric`,
+          [item_id, destination_location_id, Math.abs(quantity)]
         );
       }
 

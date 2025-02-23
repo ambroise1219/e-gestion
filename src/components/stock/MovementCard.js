@@ -71,10 +71,24 @@ export default function MovementCard({ transaction, onMovement, showActions = fa
     
     if (!itemId || !formData.quantity) return;
 
+    // Convertir explicitement en nombre et s'assurer qu'il est positif
+    const quantity = Math.abs(Number(formData.quantity));
+    
+    // Vérifier que la quantité est valide
+    if (isNaN(quantity) || quantity <= 0) {
+      console.error('Quantité invalide');
+      return;
+    }
+
+    // Appliquer le signe en fonction du type de mouvement
+    const finalQuantity = movementType === 'out' || movementType === 'adjustment_down' 
+      ? -quantity 
+      : quantity;
+
     const movementData = {
       item_id: itemId,
       transaction_type: movementType,
-      quantity: parseInt(formData.quantity, 10),
+      quantity: finalQuantity,
       notes: formData.notes,
       reference: formData.reference
     };
