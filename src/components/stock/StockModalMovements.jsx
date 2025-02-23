@@ -7,14 +7,13 @@ import {
   ArrowDownTrayIcon
 } from '@heroicons/react/24/outline';
 
-export default function StockModalMovements({ transactions, onMovement }) {
+export default function StockModalMovements({ transactions = [], onMovement, item }) {
+  const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     type: 'all',
     dateRange: 'all',
     sortBy: 'date-desc'
   });
-
-  const [showFilters, setShowFilters] = useState(false);
 
   const filterTransactions = (transactions) => {
     if (!transactions) return [];
@@ -174,6 +173,9 @@ export default function StockModalMovements({ transactions, onMovement }) {
           </div>
         </div>
       )}
+
+      {/* Interface de création de mouvement */}
+      <MovementCard showActions={true} itemId={item?.id} onMovement={onMovement} />
 
       {/* Liste des mouvements */}
       {filteredTransactions.length > 0 ? (

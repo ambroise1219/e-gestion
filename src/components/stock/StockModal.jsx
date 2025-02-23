@@ -44,9 +44,22 @@ export default function StockModal({
   });
 
   const [activeTab, setActiveTab] = useState('overview');
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [slideDirection, setSlideDirection] = useState('right');
   const [errors, setErrors] = useState({});
+  
+  // Supprimer les states d'animation qui causent des problèmes
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // States pour la persistance des données entre les tabs
+  const [movementsData, setMovementsData] = useState([]);
+  const [statsData, setStatsData] = useState(null);
+  const [documentsData, setDocumentsData] = useState([]);
+  const [locationsData, setLocationsData] = useState([]);
+
+  useEffect(() => {
+    if (transactions?.length > 0) {
+      setMovementsData(transactions);
+    }
+  }, [transactions]);
 
   useEffect(() => {
     if (initialData || item) {
@@ -124,10 +137,6 @@ export default function StockModal({
   };
 
   const handleTabChange = (tabId) => {
-    const currentIndex = tabs.findIndex(tab => tab.id === activeTab);
-    const newIndex = tabs.findIndex(tab => tab.id === tabId);
-    setSlideDirection(newIndex > currentIndex ? 'right' : 'left');
-    setIsAnimating(true);
     setActiveTab(tabId);
   };
 
@@ -335,123 +344,25 @@ export default function StockModal({
       );
     }
 
-    // Mode vue
-    const contentClass = `transition-transform duration-300 ${
-      isAnimating 
-        ? slideDirection === 'right' 
-          ? 'translate-x-full opacity-0' 
-          : '-translate-x-full opacity-0'
-        : 'translate-x-0 opacity-100'
-    }`;
-
-    return (
-      <div className={contentClass}>
-        {activeTab === 'overview' && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                  Informations générales
-                </h3>
-                <dl className="space-y-3">
-                  <div>
-                    <dt className="text-sm text-gray-500 dark:text-gray-400">Référence</dt>
-                    <dd className="text-sm font-medium text-gray-900 dark:text-white">{item.reference}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm text-gray-500 dark:text-gray-400">Description</dt>
-                    <dd className="text-sm font-medium text-gray-900 dark:text-white">{item.description || '-'}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm text-gray-500 dark:text-gray-400">Catégorie</dt>
-                    <dd className="text-sm font-medium text-gray-900 dark:text-white">
-                      {item.category === 'raw' ? 'Matières premières' :
-                       item.category === 'finished' ? 'Produits finis' :
-                       item.category === 'packaging' ? 'Emballages' : '-'}
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                  Fournisseur
-                </h3>
-                {item.supplier_id ? (
-                  <dl className="space-y-3">
-                    <div>
-                      <dt className="text-sm text-gray-500 dark:text-gray-400">Nom</dt>
-                      <dd className="text-sm font-medium text-gray-900 dark:text-white">{item.supplier_name}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-sm text-gray-500 dark:text-gray-400">Contact</dt>
-                      <dd className="text-sm font-medium text-gray-900 dark:text-white">{item.supplier_contact || '-'}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-sm text-gray-500 dark:text-gray-400">Email</dt>
-                      <dd className="text-sm font-medium text-gray-900 dark:text-white">{item.supplier_email || '-'}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-sm text-gray-500 dark:text-gray-400">Téléphone</dt>
-                      <dd className="text-sm font-medium text-gray-900 dark:text-white">{item.supplier_phone || '-'}</dd>
-                    </div>
-                  </dl>
-                ) : (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Aucun fournisseur associé</p>
-                )}
-              </div>
-            </div>
-
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                Stock et prix
-              </h3>
-              <div className="grid grid-cols-4 gap-6">
-                <div>
-                  <dt className="text-sm text-gray-500 dark:text-gray-400">Quantité actuelle</dt>
-                  <dd className="text-2xl font-semibold text-gray-900 dark:text-white">
-                    {item.quantity} {item.unit}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm text-gray-500 dark:text-gray-400">Stock minimum</dt>
-                  <dd className="text-2xl font-semibold text-gray-900 dark:text-white">
-                    {item.min_quantity} {item.unit}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm text-gray-500 dark:text-gray-400">Stock maximum</dt>
-                  <dd className="text-2xl font-semibold text-gray-900 dark:text-white">
-                    {item.max_quantity} {item.unit}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm text-gray-500 dark:text-gray-400">Prix unitaire</dt>
-                  <dd className="text-2xl font-semibold text-gray-900 dark:text-white">
-                    {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(item.unit_price)}
-                  </dd>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'movements' && (
-          <StockModalMovements
-            transactions={transactions}
-            onMovement={onMovement}
-          />
-        )}
-
-        {/* Autres onglets à implémenter */}
-      </div>
-    );
+    // Simplifier l'affichage des tabs
+    switch (activeTab) {
+      case 'overview':
+        return <StockModalOverview item={item} />;
+      case 'movements':
+        return <StockModalMovements transactions={transactions} onMovement={onMovement} item={item} />;
+      case 'stats':
+        return <StockModalStats item={item} />;
+      case 'documents':
+        return <StockModalDocuments item={item} />;
+      case 'locations':
+        return <StockModalLocations item={item} />;
+      default:
+        return null;
+    }
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm"
-    >
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="flex items-center justify-center min-h-screen p-4">
         <div className="relative bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-xl">
           {/* Header avec animation de gradient */}
@@ -471,11 +382,11 @@ export default function StockModal({
             </div>
           </div>
 
-          {/* Navigation */}
+          {/* Navigation simplifiée */}
           {mode === 'view' && (
             <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
-                <div className="flex-1 flex items-center space-x-4">
+                <div className="flex-1 flex items-center space-x-4 overflow-x-auto">
                   {tabs.map((tab) => {
                     const Icon = tab.icon;
                     return (
@@ -489,14 +400,14 @@ export default function StockModal({
                         }`}
                       >
                         <Icon className="w-5 h-5" />
-                        <span>{tab.label}</span>
+                        <span className="whitespace-nowrap">{tab.label}</span>
                       </button>
                     );
                   })}
                 </div>
 
                 {/* Navigation arrows */}
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 ml-4">
                   <button
                     onClick={() => {
                       const currentIndex = tabs.findIndex(tab => tab.id === activeTab);
@@ -505,7 +416,7 @@ export default function StockModal({
                       }
                     }}
                     disabled={tabs.findIndex(tab => tab.id === activeTab) === 0}
-                    className="p-1 rounded-full text-gray-800 dark:text-white hover:bg-pro-lime dark:hover:bg-pro-lime dark:hover:text-black disabled:opacity-50"
+                    className="p-1 rounded-full text-gray-800 dark:text-white hover:bg-pro-lime dark:hover:bg-pro-lime dark:hover:text-black disabled:opacity-50 transition-colors"
                   >
                     <ChevronLeftIcon className="w-5 h-5" />
                   </button>
@@ -517,7 +428,7 @@ export default function StockModal({
                       }
                     }}
                     disabled={tabs.findIndex(tab => tab.id === activeTab) === tabs.length - 1}
-                    className="p-1 rounded-full text-gray-800 dark:text-white hover:bg-pro-lime dark:hover:bg-pro-lime dark:hover:text-black disabled:opacity-50"
+                    className="p-1 rounded-full text-gray-800 dark:text-white hover:bg-pro-lime dark:hover:bg-pro-lime dark:hover:text-black disabled:opacity-50 transition-colors"
                   >
                     <ChevronRightIcon className="w-5 h-5" />
                   </button>
@@ -526,7 +437,7 @@ export default function StockModal({
             </div>
           )}
 
-          {/* Content avec animation */}
+          {/* Content */}
           <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
             {renderContent()}
           </div>

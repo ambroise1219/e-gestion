@@ -15,7 +15,9 @@ import {
   ExclamationTriangleIcon
 } from '@heroicons/react/24/outline';
 
-export default function StockModalOverview({ material, isEditing }) {
+export default function StockModalOverview({ item }) {
+  if (!item) return null;
+
   const [selectedPeriod, setSelectedPeriod] = useState('month');
 
   // Données simulées pour les tendances
@@ -72,7 +74,7 @@ export default function StockModalOverview({ material, isEditing }) {
   };
 
   const stockStatus = () => {
-    const ratio = material.quantity / material.minQuantity;
+    const ratio = item.quantity / item.min_quantity;
     if (ratio <= 1) return { color: 'red', text: 'Critique' };
     if (ratio <= 1.5) return { color: 'yellow', text: 'Faible' };
     if (ratio >= 3) return { color: 'blue', text: 'Excédent' };
@@ -120,10 +122,10 @@ export default function StockModalOverview({ material, isEditing }) {
               )}
             </div>
             <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-              {material.quantity} {material.unit}
+              {item.quantity} {item.unit}
             </p>
             <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              Seuil minimum: {material.minQuantity} {material.unit}
+              Seuil minimum: {item.min_quantity} {item.unit}
             </div>
           </div>
           <div className="border-l border-gray-200 dark:border-gray-700 pl-6">
@@ -132,11 +134,11 @@ export default function StockModalOverview({ material, isEditing }) {
             </h4>
             <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
               {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF' })
-                .format(material.quantity * material.unitPrice)}
+                .format(item.quantity * item.unit_price)}
             </p>
             <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
               Prix unitaire: {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF' })
-                .format(material.unitPrice)} / {material.unit}
+                .format(item.unit_price)} / {item.unit}
             </div>
           </div>
         </div>
@@ -159,7 +161,7 @@ export default function StockModalOverview({ material, isEditing }) {
             </span>
           </div>
           <h3 className="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
-            {currentTrends.consumption} {material.unit}
+            {currentTrends.consumption} {item.unit}
           </h3>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Consommation
@@ -247,10 +249,10 @@ export default function StockModalOverview({ material, isEditing }) {
               <DocumentTextIcon className="w-5 h-5 text-gray-400" />
               <div>
                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {material.name}
+                  {item.name}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Référence: {material.reference}
+                  Référence: {item.reference}
                 </p>
               </div>
             </div>
@@ -258,7 +260,7 @@ export default function StockModalOverview({ material, isEditing }) {
               <MapPinIcon className="w-5 h-5 text-gray-400" />
               <div>
                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {material.location || 'Non assigné'}
+                  {item.location || 'Non assigné'}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Emplacement principal
@@ -269,7 +271,7 @@ export default function StockModalOverview({ material, isEditing }) {
               <TruckIcon className="w-5 h-5 text-gray-400" />
               <div>
                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {material.supplier || 'Non spécifié'}
+                  {item.supplier_name || 'Non spécifié'}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Fournisseur principal
@@ -280,7 +282,7 @@ export default function StockModalOverview({ material, isEditing }) {
               <UserGroupIcon className="w-5 h-5 text-gray-400" />
               <div>
                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  {material.responsibles?.join(', ') || 'Non assigné'}
+                  {item.responsibles?.join(', ') || 'Non assigné'}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Responsables
@@ -302,7 +304,7 @@ export default function StockModalOverview({ material, isEditing }) {
                   Niveau de stock
                 </span>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {Math.round((material.quantity / material.maxQuantity) * 100)}%
+                  {Math.round((item.quantity / item.max_quantity) * 100)}%
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
@@ -313,12 +315,12 @@ export default function StockModalOverview({ material, isEditing }) {
                     status.color === 'green' ? 'bg-green-500' :
                     'bg-blue-500'
                   }`}
-                  style={{ width: `${(material.quantity / material.maxQuantity) * 100}%` }}
+                  style={{ width: `${(item.quantity / item.max_quantity) * 100}%` }}
                 ></div>
               </div>
               <div className="flex justify-between mt-1 text-xs text-gray-500">
-                <span>Min: {material.minQuantity} {material.unit}</span>
-                <span>Max: {material.maxQuantity} {material.unit}</span>
+                <span>Min: {item.min_quantity} {item.unit}</span>
+                <span>Max: {item.max_quantity} {item.unit}</span>
               </div>
             </div>
 
