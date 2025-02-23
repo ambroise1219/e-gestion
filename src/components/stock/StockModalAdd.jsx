@@ -156,7 +156,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
         <textarea
           value={formData.description}
           onChange={(e) => handleInputChange('description', e.target.value)}
-          className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+          className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime p-2 dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
           rows="4"
           placeholder="Description détaillée du matériau..."
         />
@@ -212,7 +212,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                className="block w-full rounded-lg border-gray-800 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+                className="block w-full rounded-lg p-2 border-gray-800 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
                 placeholder="Ex: Ciment Portland"
               />
             </div>
@@ -223,7 +223,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
               <select
                 value={formData.category}
                 onChange={(e) => handleInputChange('category', e.target.value)}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+                className="block w-full rounded-lg p-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
               >
                 <option value="">Sélectionner une catégorie</option>
                 <option value="raw">Matières premières</option>
@@ -240,7 +240,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
               <select
                 value={formData.unit}
                 onChange={(e) => handleInputChange('unit', e.target.value)}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+                className="block w-full rounded-lg p-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
               >
                 <option value="">Sélectionner une unité</option>
                 <option value="kg">Kilogrammes</option>
@@ -265,7 +265,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
                 type="number"
                 value={formData.quantity}
                 onChange={(e) => handleInputChange('quantity', e.target.value)}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+                className="block w-full rounded-lg p-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
                 placeholder="Ex: 100"
                 min="0"
               />
@@ -278,7 +278,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
                 type="number"
                 value={formData.unit_price}
                 onChange={(e) => handleInputChange('unit_price', e.target.value)}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+                className="block w-full rounded-lg p-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
                 placeholder="Ex: 5000"
                 min="0"
               />
@@ -291,7 +291,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
                 type="number"
                 value={formData.min_quantity}
                 onChange={(e) => handleInputChange('min_quantity', e.target.value)}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+                className="block w-full rounded-lg p-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
                 placeholder="Ex: 20"
                 min="0"
               />
@@ -304,7 +304,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
                 type="number"
                 value={formData.max_quantity}
                 onChange={(e) => handleInputChange('max_quantity', e.target.value)}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+                className="block w-full rounded-lg p-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
                 placeholder="Ex: 1000"
                 min="0"
               />
@@ -321,7 +321,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
               <select
                 value={formData.location_id}
                 onChange={(e) => handleInputChange('location_id', e.target.value)}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+                className="block w-full rounded-lg p-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
               >
                 <option value="">Sélectionner un emplacement</option>
                 {locations.map(location => (
@@ -338,7 +338,7 @@ export default function StockModalAdd({ onClose, onAdd }) {
               <select
                 value={formData.supplier_id}
                 onChange={(e) => handleInputChange('supplier_id', e.target.value)}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
+                className="block w-full rounded-lg p-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-pro-lime focus:ring-pro-lime dark:focus:border-pro-lime/50 dark:focus:ring-pro-lime/50"
               >
                 <option value="">Sélectionner un fournisseur</option>
                 {suppliers.map(supplier => (

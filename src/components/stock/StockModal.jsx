@@ -155,7 +155,7 @@ export default function StockModal({
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className={`w-full rounded-lg border ${
+                className={`w-full rounded-lg border p-2 ${
                   errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700`}
               />
@@ -173,7 +173,7 @@ export default function StockModal({
                 name="reference"
                 value={formData.reference}
                 onChange={handleInputChange}
-                className={`w-full rounded-lg border ${
+                className={`w-full rounded-lg border p-2 ${
                   errors.reference ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700`}
               />
@@ -193,7 +193,7 @@ export default function StockModal({
               value={formData.description}
               onChange={handleInputChange}
               rows={3}
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
+              className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
             />
           </div>
 
@@ -209,7 +209,7 @@ export default function StockModal({
                 value={formData.quantity}
                 onChange={handleInputChange}
                 min="0"
-                className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
+                className="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
               />
             </div>
 
@@ -222,7 +222,7 @@ export default function StockModal({
                 name="unit"
                 value={formData.unit}
                 onChange={handleInputChange}
-                className={`w-full rounded-lg border ${
+                className={`w-full rounded-lg border p-2 ${
                   errors.unit ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700`}
               />
@@ -241,7 +241,7 @@ export default function StockModal({
                 value={formData.min_quantity}
                 onChange={handleInputChange}
                 min="0"
-                className={`w-full rounded-lg border ${
+                className={`w-full rounded-lg border p-2 ${
                   errors.min_quantity ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700`}
               />
@@ -260,7 +260,7 @@ export default function StockModal({
                 value={formData.max_quantity}
                 onChange={handleInputChange}
                 min="0"
-                className={`w-full rounded-lg border ${
+                className={`w-full rounded-lg border p-2 ${
                   errors.max_quantity ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 } bg-white dark:bg-gray-700`}
               />
@@ -280,7 +280,7 @@ export default function StockModal({
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
+                className="w-full rounded-lg p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
               >
                 <option value="">Sélectionner une catégorie</option>
                 <option value="raw">Matières premières</option>
@@ -300,7 +300,7 @@ export default function StockModal({
                 onChange={handleInputChange}
                 min="0"
                 step="0.01"
-                className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
+                className="w-full rounded-lg p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
               />
             </div>
 
@@ -312,7 +312,7 @@ export default function StockModal({
                 name="supplier_id"
                 value={formData.supplier_id}
                 onChange={handleInputChange}
-                className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
+                className="w-full rounded-lg p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700"
               >
                 <option value="">Sélectionner un fournisseur</option>
                 {suppliers.map(supplier => (

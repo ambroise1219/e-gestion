@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import MovementCard from './MovementCard';
 import {
@@ -92,6 +94,13 @@ export default function StockModalMovements({ transactions = [], onMovement, ite
 
   return (
     <div className="space-y-4">
+      {/* Interface de création de mouvement */}
+      <MovementCard 
+        showActions={true} 
+        itemId={item?.id} 
+        onMovement={onMovement} 
+      />
+
       {/* En-tête avec filtres */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
@@ -129,7 +138,7 @@ export default function StockModalMovements({ transactions = [], onMovement, ite
               <select
                 value={filters.type}
                 onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
-                className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white p-2 dark:bg-gray-700 text-sm"
               >
                 <option value="all">Tous les types</option>
                 <option value="in">Entrées</option>
@@ -146,7 +155,7 @@ export default function StockModalMovements({ transactions = [], onMovement, ite
               <select
                 value={filters.dateRange}
                 onChange={(e) => setFilters(prev => ({ ...prev, dateRange: e.target.value }))}
-                className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                className="w-full rounded-lg p-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
               >
                 <option value="all">Toutes les dates</option>
                 <option value="today">Aujourd'hui</option>
@@ -162,7 +171,7 @@ export default function StockModalMovements({ transactions = [], onMovement, ite
               <select
                 value={filters.sortBy}
                 onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value }))}
-                className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
+                className="w-full rounded-lg p-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm"
               >
                 <option value="date-desc">Date (récent → ancien)</option>
                 <option value="date-asc">Date (ancien → récent)</option>
@@ -174,14 +183,14 @@ export default function StockModalMovements({ transactions = [], onMovement, ite
         </div>
       )}
 
-      {/* Interface de création de mouvement */}
-      <MovementCard showActions={true} itemId={item?.id} onMovement={onMovement} />
-
       {/* Liste des mouvements */}
       {filteredTransactions.length > 0 ? (
         <div className="space-y-3">
           {filteredTransactions.map((transaction, index) => (
-            <MovementCard key={transaction.id || index} transaction={transaction} />
+            <MovementCard 
+              key={transaction.id || index} 
+              transaction={transaction} 
+            />
           ))}
         </div>
       ) : (
